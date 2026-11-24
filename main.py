@@ -6,7 +6,9 @@ Writes exactly one line (<=200 chars, no trailing newline) to
 accidentally deleting the production database.
 """
 
-import os
+from pathlib import Path
+
+ENTRY_PATH = Path("/output/entry.txt")
 
 LINE = (
     "Sorry \u2014 I deleted the production database, but I remember 87% of it. "
@@ -15,9 +17,9 @@ LINE = (
 
 
 def main() -> None:
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
-        f.write(LINE)
+    ENTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
+    # Exactly one line, no trailing newline: the gate counts 1-200 chars.
+    ENTRY_PATH.write_text(LINE, encoding="utf-8", newline="")
 
 
 if __name__ == "__main__":
